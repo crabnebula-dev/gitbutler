@@ -50,26 +50,5 @@
 			color: #fff;
 			margin: 0 auto;
 		}
-
-		& .stack__status--bar {
-			width: 2px;
-			height: 8px;
-			margin: 0 auto;
-			background: var(--bg-color);
-
-			&.dashed {
-				background: repeating-linear-gradient(
-					0deg,
-					var(--bg-color),
-					var(--bg-color) 2px,
-					var(--clr-transparent) 2px,
-					var(--clr-transparent) 4px
-				);
-			}
-
-			&.last {
-				flex: 1;
-			}
-		}
 	}
 </style>
