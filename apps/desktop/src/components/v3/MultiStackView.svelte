@@ -107,6 +107,7 @@
 		{#if stacks.length > 0}
 			{#each stacks as stack, i}
 				{@const active = stack.id === projectState.stackId.current}
+
 				<div
 					class="lane"
 					class:multi={$mode === 'multi' || stacks.length < SHOW_PAGINATION_THRESHOLD}

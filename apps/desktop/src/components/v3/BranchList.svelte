@@ -269,6 +269,7 @@
 											{/snippet}
 											{#snippet upstreamTemplate({ commit, first, lastCommit, selected })}
 												{@const commitId = commit.id}
+
 												{#if !isCommitting}
 													<CommitRow
 														type="Remote"
@@ -401,7 +402,7 @@
 															{stackId}
 															{branchName}
 															{projectId}
-															{first}
+															first={first && upstreamOnlyCommits.length === 0}
 															{lastCommit}
 															lastBranch={last}
 															{selected}

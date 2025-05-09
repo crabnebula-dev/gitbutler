@@ -123,12 +123,7 @@
 				<div class="branch-header__select-indicator" in:slide={{ axis: 'x', duration: 150 }}></div>
 			{/if}
 
-			<BranchHeaderIcon
-				{lineColor}
-				{iconName}
-				lineTop={args.isTopBranch ? false : true}
-				isDashed={args.isNewBranch}
-			/>
+			<BranchHeaderIcon {lineColor} {iconName} />
 			<div class="branch-header__content">
 				<div class="name-line text-14 text-bold">
 					<BranchLabel
@@ -200,7 +195,7 @@
 			<div class="branch-header__select-indicator" in:slide={{ axis: 'x', duration: 150 }}></div>
 		{/if}
 
-		<BranchHeaderIcon {lineColor} {iconName} lineTop={!args.isTopBranch} />
+		<BranchHeaderIcon {lineColor} {iconName} />
 		<div class="branch-header__content">
 			<div class="name-line text-14 text-bold">
 				<BranchLabel name={branchName} fontSize="15" readonly={true} />
@@ -229,7 +224,7 @@
 		class="branch-header new-branch draft selected"
 		tabindex="0"
 	>
-		<BranchHeaderIcon {lineColor} {iconName} isDashed lineTop />
+		<BranchHeaderIcon {lineColor} {iconName} />
 		<div class="branch-header__content">
 			<div class="name-line text-14 text-bold">
 				<BranchLabel
@@ -324,7 +319,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
-		padding: 14px 0;
+		padding: 12px 0;
 		margin-left: -2px;
 		text-overflow: ellipsis;
 	}

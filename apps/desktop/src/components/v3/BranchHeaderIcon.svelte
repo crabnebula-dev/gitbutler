@@ -5,36 +5,24 @@
 	interface Props {
 		iconName: keyof typeof iconsJson;
 		lineColor: string;
-		lineTop?: boolean;
-		lineBottom?: boolean;
-		isDashed?: boolean;
 	}
 
-	const { iconName, lineColor, lineTop = true, lineBottom = true, isDashed }: Props = $props();
+	const { iconName, lineColor }: Props = $props();
 </script>
 
 <div class="stack__status gap">
-	<div
-		class="stack__status--bar"
-		style:--bg-color={lineTop ? lineColor : 'var(--clr-transparent)'}
-	></div>
 	<div class="stack__status--icon" style:--bg-color={lineColor}>
 		<Icon name={iconName} />
 	</div>
-	<div
-		class="stack__status--bar last"
-		class:dashed={isDashed}
-		style:--bg-color={lineBottom ? lineColor : 'var(--clr-transparent)'}
-	></div>
 </div>
 
 <style>
 	.stack__status {
 		flex: 0 0 auto;
 		align-self: stretch;
+		padding-top: 11px;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		gap: 3px;
 		width: 42px;
 		--clr-transparent: transparent;

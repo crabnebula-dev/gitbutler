@@ -67,6 +67,7 @@
 		opacity,
 		borderTop,
 		isOpen,
+
 		onclick,
 		menu,
 		...args
@@ -110,8 +111,8 @@
 		commitStatus={args.type}
 		diverged={args.type === 'LocalAndRemote' && !args.disableCommitActions ? args.diverged : false}
 		{tooltip}
-		{lastCommit}
-		{lastBranch}
+		firstCommit={first}
+		dashed={lastCommit && lastBranch}
 	/>
 
 	<div data-testid={TestId.CommitRow} class="commit-content" class:shift-to-left={isConflicted}>

@@ -8,19 +8,25 @@
 		commitStatus: CommitStatusType;
 		diverged: boolean;
 		tooltip?: string;
-		lastCommit?: boolean;
-		lastBranch?: boolean;
+		firstCommit?: boolean;
+		dashed?: boolean;
 		width?: number;
 	}
 
-	const { commitStatus, diverged, tooltip, lastCommit, lastBranch, width = 42 }: Props = $props();
+	const { commitStatus, diverged, tooltip, dashed, firstCommit, width = 42 }: Props = $props();
 
 	const color = $derived(getColorFromCommitState(commitStatus, diverged));
 
 	const rhombus = $derived(commitStatus === 'LocalAndRemote');
 </script>
 
-<div class="commit-lines" style:--commit-color={color} style:--container-width={pxToRem(width)}>
+<div
+	class="commit-lines"
+	class:first-commit={firstCommit}
+	class:dashed
+	style:--commit-color={color}
+	style:--container-width={pxToRem(width)}
+>
 	<div class="top"></div>
 	{#if diverged}
 		<div class="local-shadow-commit-dot">
@@ -46,7 +52,7 @@
 			<div class="middle" class:rhombus></div>
 		</Tooltip>
 	{/if}
-	<div class="bottom" class:dashed={lastCommit && lastBranch}></div>
+	<div class="bottom"></div>
 </div>
 
 <style lang="postcss">
@@ -96,6 +102,25 @@
 			width: 11px;
 			height: 10px;
 			fill: var(--clr-commit-local);
+		}
+	}
+
+	/* MODIFIERS */
+	.first-commit {
+		.top {
+			visibility: hidden;
+		}
+	}
+
+	.dashed {
+		.bottom {
+			background: repeating-linear-gradient(
+				0deg,
+				var(--commit-color),
+				var(--commit-color) 2px,
+				transparent 2px,
+				transparent 4px
+			);
 		}
 	}
 </style>
