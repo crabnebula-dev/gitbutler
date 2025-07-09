@@ -80,7 +80,7 @@
 				{onclick}
 				oncontextmenu={preventContextMenu}
 			>
-				{@render children()}
+				{@render children?.()}
 			</Button>
 			<Button
 				bind:el={iconEl}

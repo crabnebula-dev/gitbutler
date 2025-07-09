@@ -231,6 +231,8 @@
 			useRichText = false;
 		}
 	});
+
+	let currentEditorWidth = $state<number>(0);
 </script>
 
 <Modal
@@ -281,6 +283,7 @@
 	style:--code-block-font={$userSettings.diffFont}
 	style:--code-block-tab-size={$userSettings.tabSize}
 	style:--code-block-ligatures={$userSettings.diffLigatures ? 'common-ligatures' : 'normal'}
+	bind:clientWidth={currentEditorWidth}
 	onclick={stopPropagation}
 	ondblclick={stopPropagation}
 	onmousedown={stopPropagation}
@@ -437,6 +440,7 @@
 					/>
 				{/if}
 			</div>
+
 			<DropDownButton
 				kind="outline"
 				icon="ai-small"
@@ -448,7 +452,11 @@
 				menuPosition="top"
 				onclick={handleGenerateMessage}
 			>
-				Generate message
+				{currentEditorWidth > 320
+					? 'Generate message'
+					: currentEditorWidth > 300
+						? 'Generate'
+						: undefined}
 
 				{#snippet contextMenuSlot()}
 					<ContextMenuSection>
@@ -539,10 +547,12 @@
 		display: flex;
 		flex: 1;
 		align-items: center;
+		overflow: hidden;
 		gap: 6px;
 	}
 
 	.message-textarea__toolbar__divider {
+		flex-shrink: 0;
 		width: 1px;
 		height: 18px;
 		background-color: var(--clr-border-3);
