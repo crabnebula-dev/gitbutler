@@ -134,7 +134,7 @@
 		{type}
 		{id}
 		{tabindex}
-		{...testId ? { 'data-testid': testId } : null}
+		data-testid={testId}
 	>
 		{#if children}
 			<span
