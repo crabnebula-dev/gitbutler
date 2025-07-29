@@ -44,7 +44,7 @@ export class UpdaterService {
 	readonly disableAutoChecks = writable(false);
 	readonly loading = writable(false);
 	readonly update = writable<UpdateStatus>({}, () => {
-		if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+		if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 			return;
 		}
 

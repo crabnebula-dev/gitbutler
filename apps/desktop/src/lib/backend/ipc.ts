@@ -69,7 +69,7 @@ export async function invoke<T>(command: string, params: Record<string, unknown>
 	// });
 
 	try {
-		if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+		if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 			const response = await fetch('http://localhost:6978', {
 				method: 'POST',
 				headers: {
@@ -97,7 +97,7 @@ export async function invoke<T>(command: string, params: Record<string, unknown>
 let webListener: WebListener | undefined;
 
 export function listen<T>(event: EventName, handle: EventCallback<T>) {
-	if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+	if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 		if (!webListener) {
 			webListener = new WebListener();
 		}

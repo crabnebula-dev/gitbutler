@@ -57,7 +57,7 @@ export class ProjectsService {
 
 	async promptForDirectory(): Promise<string | undefined> {
 		let selectedPath: string | undefined | null;
-		if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+		if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 			// TODO: Consider: this is electron specific, could we use a web API
 			// and also work on the real web?
 			selectedPath = await window.electronAPI?.openDirectory();

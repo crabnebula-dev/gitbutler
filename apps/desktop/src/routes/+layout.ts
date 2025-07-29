@@ -30,7 +30,7 @@ export const load: LayoutLoad = async () => {
 	// TODO: Find a workaround to avoid this dynamic import
 	// https://github.com/sveltejs/kit/issues/905
 	let homeDir: string;
-	if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+	if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 		homeDir = '/tmp/gitbutler';
 	} else {
 		homeDir = await (await import('@tauri-apps/api/path')).homeDir();

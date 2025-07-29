@@ -14,7 +14,7 @@ type DiskWritable<T> = Writable<T> & { onDisk: () => Promise<T> };
 
 export async function loadAppSettings() {
 	let diskStore: Store | undefined;
-	if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+	if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 		// TODO: Implement electron alternative
 	} else {
 		diskStore = await Store.load('settings.json', { autoSave: true });

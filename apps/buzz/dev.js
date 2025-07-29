@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { spawn } from 'child_process';
 import net from 'net';
 import path from 'path';
@@ -38,7 +36,7 @@ function spawnProcess(command, args, cwd = process.cwd(), options = {}) {
 		env: {
 			...process.env,
 			ELECTRON_ENV: 'development',
-			VITE_BUILD_TARGET: 'electron',
+			VITE_BUILD_TARGET: 'web',
 			VITE_PORT,
 			VITE_HOST,
 			BUTLER_PORT,
@@ -190,7 +188,7 @@ async function main() {
 		log('\n⚡ Starting Electron app...', colors.green);
 
 		// Start the electron app
-		electronProcess = spawnProcess('electron', ['.'], buzzDir);
+		electronProcess = spawnProcess('web', ['.'], buzzDir);
 
 		electronProcess.on('close', (code) => {
 			log(`Electron app exited with code ${code}`, colors.yellow);

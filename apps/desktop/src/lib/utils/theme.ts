@@ -3,7 +3,7 @@ import { type Writable } from 'svelte/store';
 import type { Settings } from '$lib/settings/userSettings';
 
 let appWindow: Window | undefined;
-if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 	// TODO: Implement electron alternative
 } else {
 	appWindow = getCurrentWindow();

@@ -45,7 +45,7 @@ function logError(error: unknown) {
 		}
 
 		console.error(error);
-		if (import.meta.env.VITE_BUILD_TARGET === 'electron') {
+		if (import.meta.env.VITE_BUILD_TARGET === 'web') {
 			// TODO: Replace with electron log file
 		} else {
 			logErrorToFile(String(error));
