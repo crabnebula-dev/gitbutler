@@ -21,7 +21,7 @@ pub fn git_remote_branches(
     ipc_ctx: &IpcContext,
     params: GitRemoteBranchesParams,
 ) -> Result<Vec<RemoteRefname>, Error> {
-    let project = ipc_ctx.project_controller.get(params.project_id)?;
+    let project = gitbutler_project::get(params.project_id)?;
     let ctx = CommandContext::open(&project, ipc_ctx.app_settings.get()?.clone())?;
     Ok(ctx.repo().remote_branches()?)
 }
@@ -35,7 +35,7 @@ pub struct GitTestPushParams {
 }
 
 pub fn git_test_push(ipc_ctx: &IpcContext, params: GitTestPushParams) -> Result<(), Error> {
-    let project = ipc_ctx.project_controller.get(params.project_id)?;
+    let project = gitbutler_project::get(params.project_id)?;
     let ctx = CommandContext::open(&project, ipc_ctx.app_settings.get()?.clone())?;
     ctx.git_test_push(&params.remote_name, &params.branch_name, Some(None))?;
     Ok(())
@@ -50,7 +50,7 @@ pub struct GitTestFetchParams {
 }
 
 pub fn git_test_fetch(ipc_ctx: &IpcContext, params: GitTestFetchParams) -> Result<(), Error> {
-    let project = ipc_ctx.project_controller.get(params.project_id)?;
+    let project = gitbutler_project::get(params.project_id)?;
     let ctx = CommandContext::open(&project, ipc_ctx.app_settings.get()?.clone())?;
     ctx.fetch(
         &params.remote_name,
@@ -66,7 +66,7 @@ pub struct GitIndexSizeParams {
 }
 
 pub fn git_index_size(ipc_ctx: &IpcContext, params: GitIndexSizeParams) -> Result<usize, Error> {
-    let project = ipc_ctx.project_controller.get(params.project_id)?;
+    let project = gitbutler_project::get(params.project_id)?;
     let ctx = CommandContext::open(&project, ipc_ctx.app_settings.get()?.clone())?;
     let size = ctx
         .repo()
@@ -83,17 +83,15 @@ pub struct GitHeadParams {
 }
 
 pub fn git_head(ipc_ctx: &IpcContext, params: GitHeadParams) -> Result<String, Error> {
-    let project = ipc_ctx.project_controller.get(params.project_id)?;
+    let project = gitbutler_project::get(params.project_id)?;
     let ctx = CommandContext::open(&project, ipc_ctx.app_settings.get()?.clone())?;
     let head = ctx.repo().head().context("failed to get repository head")?;
     Ok(head.name().unwrap().to_string())
 }
 
-pub fn delete_all_data(ipc_ctx: &IpcContext, _params: ()) -> Result<(), Error> {
-    let controller = &ipc_ctx.project_controller;
-    for project in controller.list().context("failed to list projects")? {
-        controller
-            .delete(project.id)
+pub fn delete_all_data(_ipc_ctx: &IpcContext, _params: ()) -> Result<(), Error> {
+    for project in gitbutler_project::list().context("failed to list projects")? {
+        gitbutler_project::delete(project.id)
             .map_err(|err| err.context("failed to delete project"))?;
     }
     Ok(())

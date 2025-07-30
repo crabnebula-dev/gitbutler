@@ -9,7 +9,12 @@ use axum::{
     response::IntoResponse,
     routing::{any, get},
 };
-use but_interface::{IpcContext, broadcaster::Broadcaster, commands::{git, users}, error::ToError as _};
+use but_interface::{
+    IpcContext,
+    broadcaster::Broadcaster,
+    commands::{git, repo, users},
+    error::ToError as _,
+};
 use but_settings::AppSettingsWithDiskSync;
 use futures_util::{SinkExt, StreamExt as _};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
@@ -18,29 +23,8 @@ use tokio::sync::Mutex;
 use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
 
-use crate::projects::ActiveProjects;
-
-mod action;
-mod askpass;
-mod cli;
-mod config;
-mod diff;
-mod forge;
-mod github;
-mod menu;
-mod modes;
-mod open;
 mod projects;
-mod remotes;
-mod repo;
-mod rules;
-mod secret;
-mod settings;
-mod stack;
-mod undo;
-mod virtual_branches;
-mod workspace;
-mod zip;
+use crate::projects::ActiveProjects;
 
 #[derive(Clone)]
 pub(crate) struct RequestContext {
@@ -63,13 +47,6 @@ enum Response {
 pub(crate) struct Request {
     command: String,
     params: serde_json::Value,
-}
-
-#[derive(Debug, Serialize, Clone)]
-#[serde(rename_all = "camelCase")]
-pub(crate) struct FrontendEvent {
-    name: String,
-    payload: serde_json::Value,
 }
 
 pub async fn run() {
@@ -318,18 +295,20 @@ async fn handle_command(
         // // Archive/Zip commands
         // "get_logs_archive_path" => zip::get_logs_archive_path(&ctx, request.params),
         // "get_project_archive_path" => zip::get_project_archive_path(&ctx, request.params),
-        // // Repository commands
-        // "git_get_local_config" => repo::git_get_local_config(&ctx, request.params),
-        // "git_set_local_config" => repo::git_set_local_config(&ctx, request.params),
-        // "check_signing_settings" => repo::check_signing_settings(&ctx, request.params),
-        // "git_clone_repository" => repo::git_clone_repository(&ctx, request.params),
-        // "get_uncommited_files" => repo::get_uncommited_files(&ctx, request.params),
-        // "get_commit_file" => repo::get_commit_file(&ctx, request.params),
-        // "get_workspace_file" => repo::get_workspace_file(&ctx, request.params),
-        // "pre_commit_hook" => repo::pre_commit_hook(&ctx, request.params),
-        // "pre_commit_hook_diffspecs" => repo::pre_commit_hook_diffspecs(&ctx, request.params),
-        // "post_commit_hook" => repo::post_commit_hook(&ctx, request.params),
-        // "message_hook" => repo::message_hook(&ctx, request.params),
+        // Repository commands
+        "git_get_local_config" => run_cmd(&ipc_ctx, request.params, repo::git_get_local_config),
+        "git_set_local_config" => run_cmd(&ipc_ctx, request.params, repo::git_set_local_config),
+        "check_signing_settings" => run_cmd(&ipc_ctx, request.params, repo::check_signing_settings),
+        "git_clone_repository" => run_cmd(&ipc_ctx, request.params, repo::git_clone_repository),
+        "get_uncommited_files" => run_cmd(&ipc_ctx, request.params, repo::get_uncommitted_files),
+        "get_commit_file" => run_cmd(&ipc_ctx, request.params, repo::get_commit_file),
+        "get_workspace_file" => run_cmd(&ipc_ctx, request.params, repo::get_workspace_file),
+        "pre_commit_hook" => run_cmd(&ipc_ctx, request.params, repo::pre_commit_hook),
+        "pre_commit_hook_diffspecs" => {
+            run_cmd(&ipc_ctx, request.params, repo::pre_commit_hook_diffspecs)
+        }
+        "post_commit_hook" => run_cmd(&ipc_ctx, request.params, repo::post_commit_hook),
+        "message_hook" => run_cmd(&ipc_ctx, request.params, repo::message_hook),
         // // Undo/Snapshot commands
         // "list_snapshots" => undo::list_snapshots(&ctx, request.params),
         // "restore_snapshot" => undo::restore_snapshot(&ctx, request.params),

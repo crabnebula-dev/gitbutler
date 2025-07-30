@@ -5,8 +5,8 @@ use serde::Serialize;
 #[derive(Debug, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct FrontendEvent {
-    name: String,
-    payload: serde_json::Value,
+    pub name: String,
+    pub payload: serde_json::Value,
 }
 
 pub struct Broadcaster {
@@ -36,5 +36,11 @@ impl Broadcaster {
 
     pub fn deregister_sender(&mut self, id: &uuid::Uuid) {
         self.senders.remove(id);
+    }
+}
+
+impl Default for Broadcaster {
+    fn default() -> Self {
+        Self::new()
     }
 }

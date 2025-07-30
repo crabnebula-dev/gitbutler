@@ -1,11 +1,12 @@
 use anyhow::{Context as _, Result};
+use but_interface::broadcaster::FrontendEvent;
 use gitbutler_project::{self as projects, Project, ProjectId};
 use gitbutler_watcher::{Change, WatcherHandle};
 use serde::Deserialize;
 use serde_json::json;
 use std::{collections::HashMap, path::Path};
 
-use crate::{FrontendEvent, RequestContext};
+use crate::RequestContext;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]

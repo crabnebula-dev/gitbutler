@@ -13,6 +13,5 @@ pub mod error;
 pub struct IpcContext {
     pub app_settings: Arc<AppSettingsWithDiskSync>,
     pub user_controller: Arc<gitbutler_user::Controller>,
-    pub project_controller: Arc<gitbutler_project::Controller>,
     pub broadcaster: Arc<Mutex<Broadcaster>>,
 }
