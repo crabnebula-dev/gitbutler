@@ -9,7 +9,7 @@ use axum::{
     response::IntoResponse,
     routing::{any, get},
 };
-use but_interface::{IpcContext, broadcaster::Broadcaster, commands::git, error::ToError as _};
+use but_interface::{IpcContext, broadcaster::Broadcaster, commands::{git, users}, error::ToError as _};
 use but_settings::AppSettingsWithDiskSync;
 use futures_util::{SinkExt, StreamExt as _};
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
@@ -38,7 +38,6 @@ mod secret;
 mod settings;
 mod stack;
 mod undo;
-mod users;
 mod virtual_branches;
 mod workspace;
 mod zip;
@@ -215,10 +214,10 @@ async fn handle_command(
         // // Secret management
         // "secret_get_global" => secret::secret_get_global(&ctx, request.params),
         // "secret_set_global" => secret::secret_set_global(&ctx, request.params),
-        // // User management
-        // "get_user" => users::get_user(&ctx),
-        // "set_user" => users::set_user(&ctx, request.params),
-        // "delete_user" => users::delete_user(&ctx, request.params),
+        // User management
+        "get_user" => run_cmd(&ipc_ctx, request.params, users::get_user),
+        "set_user" => run_cmd(&ipc_ctx, request.params, users::set_user),
+        "delete_user" => run_cmd(&ipc_ctx, request.params, users::delete_user),
         // // Project management
         // "update_project" => projects::update_project(&ctx, request.params),
         // "add_project" => projects::add_project(&ctx, request.params),
