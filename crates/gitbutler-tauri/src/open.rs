@@ -1,5 +1,5 @@
-use crate::error::Error;
 use anyhow::{bail, Context};
+use but_interface::error::Error;
 use std::env;
 use tracing::instrument;
 use url::Url;

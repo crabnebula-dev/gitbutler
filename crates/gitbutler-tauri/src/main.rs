@@ -11,6 +11,10 @@
     clippy::too_many_lines
 )]
 
+use std::sync::Arc;
+
+use but_interface::broadcaster::Broadcaster;
+use but_interface::IpcContext;
 use but_settings::AppSettingsWithDiskSync;
 use gitbutler_tauri::csp::csp_with_extras;
 use gitbutler_tauri::settings::SettingsStore;
@@ -23,6 +27,7 @@ use tauri::Emitter;
 use tauri::{generate_context, Manager};
 use tauri_plugin_log::{Target, TargetKind};
 use tauri_plugin_store::StoreExt;
+use tokio::sync::Mutex;
 
 fn main() {
     let performance_logging = std::env::var_os("GITBUTLER_PERFORMANCE_LOG").is_some();
@@ -132,6 +137,24 @@ fn main() {
                     let app = App {
                         app_data_dir: app_data_dir.clone(),
                     };
+
+                    let broadcaster = Arc::new(Mutex::new(Broadcaster::new()));
+                    let ipc_ctx = IpcContext {
+                        app_settings: Arc::new(
+                            AppSettingsWithDiskSync::new(config_dir.clone())
+                                .expect("failed to create app settings"),
+                        ),
+                        user_controller: Arc::new(gitbutler_user::Controller::from_path(
+                            &app_data_dir,
+                        )),
+                        project_controller: Arc::new(gitbutler_project::Controller::from_path(
+                            &app_data_dir,
+                        )),
+                        broadcaster: broadcaster.clone(),
+                    };
+
+                    app_handle.manage(ipc_ctx);
+
                     app_handle.manage(app.users());
                     let settings_store: SettingsStore = tauri_app.store("settings.json")?.into();
                     app_handle.manage(settings_store);

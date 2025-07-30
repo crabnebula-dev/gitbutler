@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 
-use crate::error::Error;
 use crate::from_json::HexHash;
 use anyhow::Context;
 use but_graph::VirtualBranchesTomlMetadata;
 use but_hunk_assignment::HunkAssignmentRequest;
+use but_interface::error::Error;
 use but_settings::AppSettingsWithDiskSync;
 use but_workspace::commit_engine::StackSegmentId;
 use but_workspace::MoveChangesResult;

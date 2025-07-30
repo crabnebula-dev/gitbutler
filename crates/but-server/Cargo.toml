@@ -70,6 +70,7 @@ gitbutler-diff.workspace = true
 gitbutler-watcher.workspace = true
 but-rules.workspace = true
 but-action.workspace = true
+but-interface.workspace = true
 reqwest = { version = "0.12", features = ["json"] }
 gitbutler-forge.workspace = true
 open = "5.3"

@@ -1,7 +1,7 @@
 pub mod commands {
-    use crate::error::Error;
     use anyhow::{anyhow, Context};
     use but_graph::virtual_branches_legacy_types::BranchOwnershipClaims;
+    use but_interface::error::Error;
     use but_settings::AppSettingsWithDiskSync;
     use but_workspace::ui::StackEntryNoOpt;
     use but_workspace::DiffSpec;

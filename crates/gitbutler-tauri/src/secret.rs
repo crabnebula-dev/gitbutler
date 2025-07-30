@@ -3,7 +3,7 @@ use std::sync::Mutex;
 use gitbutler_secret::{secret, Sensitive};
 use tracing::instrument;
 
-use crate::error::Error;
+use but_interface::error::Error;
 
 #[tauri::command(async)]
 #[instrument(err(Debug), level = "trace")]

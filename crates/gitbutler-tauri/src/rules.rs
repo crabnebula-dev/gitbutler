@@ -1,4 +1,4 @@
-use crate::error::Error;
+use but_interface::error::Error;
 use but_rules::{
     create_rule, delete_rule, list_rules, update_rule, CreateRuleRequest, UpdateRuleRequest,
     WorkspaceRule,

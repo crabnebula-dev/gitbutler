@@ -4,7 +4,7 @@ pub mod commands {
     use tauri::State;
     use tracing::instrument;
 
-    use crate::error::Error;
+    use but_interface::error::Error;
 
     #[tauri::command(async)]
     #[instrument(skip(login), err(Debug))]

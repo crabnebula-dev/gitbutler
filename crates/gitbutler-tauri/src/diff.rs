@@ -1,4 +1,3 @@
-use crate::error::Error;
 use crate::from_json::HexHash;
 use anyhow::Context;
 use but_core::{
@@ -8,6 +7,7 @@ use but_core::{
 };
 use but_hunk_assignment::{AssignmentRejection, HunkAssignmentRequest, WorktreeChanges};
 use but_hunk_dependency::ui::hunk_dependencies_for_workspace_changes_by_worktree_dir;
+use but_interface::error::Error;
 use but_workspace::StackId;
 use gitbutler_command_context::CommandContext;
 use gitbutler_project::ProjectId;

@@ -13,7 +13,7 @@
 //!
 //! The values in these fields are controlled by attaching context, please [see the `error` docs](gitbutler_error::error))
 //! on how to do this.
-pub(crate) use frontend::{Error, ToError, UnmarkedError};
+pub use frontend::{Error, ToError, UnmarkedError};
 
 mod frontend {
     use std::borrow::Cow;

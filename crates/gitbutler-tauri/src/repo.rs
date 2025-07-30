@@ -1,7 +1,7 @@
 pub mod commands {
-    use crate::error::{Error, UnmarkedError};
     use anyhow::{Context as _, Result};
     use but_graph::virtual_branches_legacy_types::BranchOwnershipClaims;
+    use but_interface::error::{Error, UnmarkedError};
     use but_settings::AppSettingsWithDiskSync;
     use but_workspace::DiffSpec;
     use gitbutler_branch_actions::{hooks, RemoteBranchFile};

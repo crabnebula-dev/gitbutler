@@ -11,7 +11,7 @@ use tauri::Wry;
 use tauri_plugin_store::Store;
 use tracing::instrument;
 
-use crate::error::Error;
+use but_interface::error::Error;
 
 pub struct SettingsStore {
     store: Arc<Store<Wry>>,

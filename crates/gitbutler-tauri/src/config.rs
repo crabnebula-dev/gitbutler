@@ -1,5 +1,6 @@
-use crate::error::Error;
 use but_core::{settings::git::ui::GitConfigSettings, RepositoryExt};
+use but_interface::error::Error;
+use gitbutler_project as projects;
 use gitbutler_project::ProjectId;
 use tracing::instrument;
 

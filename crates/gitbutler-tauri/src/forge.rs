@@ -12,7 +12,7 @@ pub mod commands {
     use gitbutler_repo::RepoCommands;
     use tracing::instrument;
 
-    use crate::error::Error;
+    use but_interface::error::Error;
 
     #[tauri::command(async)]
     #[instrument(err(Debug))]

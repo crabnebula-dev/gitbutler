@@ -15,7 +15,8 @@ pub mod commands {
 
     use crate::projects::{assure_database_valid, warn_about_filters_and_git_lfs};
     use crate::window::state::ProjectAccessMode;
-    use crate::{error::Error, projects::ProjectForFrontend, window, WindowState};
+    use crate::{projects::ProjectForFrontend, window, WindowState};
+    use but_interface::error::Error;
 
     #[tauri::command(async)]
     #[instrument(err(Debug))]

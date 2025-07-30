@@ -8,7 +8,7 @@ use gitbutler_user::User;
 use tauri::State;
 use tracing::instrument;
 
-use crate::error::Error;
+use but_interface::error::Error;
 
 #[tauri::command(async)]
 #[instrument(skip(settings), err(Debug))]

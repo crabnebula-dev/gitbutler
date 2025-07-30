@@ -953,14 +953,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "but-path"
-version = "0.0.0"
-dependencies = [
- "anyhow",
- "dirs 6.0.0",
-]
-
-[[package]]
 name = "but-interface"
 version = "0.0.0"
 dependencies = [
@@ -1013,6 +1005,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "but-path"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "dirs 6.0.0",
+]
+
+[[package]]
 name = "but-rebase"
 version = "0.0.0"
 dependencies = [
@@ -1062,6 +1062,7 @@ dependencies = [
  "but-graph",
  "but-hunk-assignment",
  "but-hunk-dependency",
+ "but-interface",
  "but-rules",
  "but-settings",
  "but-workspace",
@@ -3558,6 +3559,7 @@ dependencies = [
  "but-graph",
  "but-hunk-assignment",
  "but-hunk-dependency",
+ "but-interface",
  "but-path",
  "but-rules",
  "but-settings",

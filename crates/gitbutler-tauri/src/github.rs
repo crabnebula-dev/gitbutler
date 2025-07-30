@@ -7,7 +7,7 @@ pub mod commands {
     use serde::{Deserialize, Serialize};
     use tracing::instrument;
 
-    use crate::error::Error;
+    use but_interface::error::Error;
 
     #[derive(Debug, Deserialize, Serialize, Clone, Default)]
     pub struct Verification {

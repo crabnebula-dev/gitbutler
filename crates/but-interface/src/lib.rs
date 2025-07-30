@@ -11,8 +11,8 @@ pub mod error;
 
 #[derive(Clone)]
 pub struct IpcContext {
-    app_settings: Arc<AppSettingsWithDiskSync>,
-    user_controller: Arc<gitbutler_user::Controller>,
-    project_controller: Arc<gitbutler_project::Controller>,
-    broadcaster: Arc<Mutex<Broadcaster>>,
+    pub app_settings: Arc<AppSettingsWithDiskSync>,
+    pub user_controller: Arc<gitbutler_user::Controller>,
+    pub project_controller: Arc<gitbutler_project::Controller>,
+    pub broadcaster: Arc<Mutex<Broadcaster>>,
 }

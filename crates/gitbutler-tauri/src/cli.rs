@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use crate::error::Error;
 use anyhow::{anyhow, bail, Context};
+use but_interface::error::Error;
 use tracing::instrument;
 
 #[tauri::command(async)]

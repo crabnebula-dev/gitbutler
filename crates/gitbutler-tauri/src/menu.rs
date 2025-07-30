@@ -1,7 +1,7 @@
 use std::{env, fs};
 
-use crate::error::Error;
 use anyhow::Context;
+use but_interface::error::Error;
 use gitbutler_error::error::{self, Code};
 #[cfg(target_os = "macos")]
 use tauri::menu::AboutMetadata;

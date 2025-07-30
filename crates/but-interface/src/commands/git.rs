@@ -14,7 +14,7 @@ use crate::{IpcContext, error::Error};
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitRemoteBranchesParams {
-    project_id: ProjectId,
+    pub project_id: ProjectId,
 }
 
 pub fn git_remote_branches(
@@ -29,9 +29,9 @@ pub fn git_remote_branches(
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitTestPushParams {
-    project_id: ProjectId,
-    remote_name: String,
-    branch_name: String,
+    pub project_id: ProjectId,
+    pub remote_name: String,
+    pub branch_name: String,
 }
 
 pub fn git_test_push(ipc_ctx: &IpcContext, params: GitTestPushParams) -> Result<(), Error> {
@@ -44,9 +44,9 @@ pub fn git_test_push(ipc_ctx: &IpcContext, params: GitTestPushParams) -> Result<
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitTestFetchParams {
-    project_id: ProjectId,
-    remote_name: String,
-    action: Option<String>,
+    pub project_id: ProjectId,
+    pub remote_name: String,
+    pub action: Option<String>,
 }
 
 pub fn git_test_fetch(ipc_ctx: &IpcContext, params: GitTestFetchParams) -> Result<(), Error> {
@@ -62,7 +62,7 @@ pub fn git_test_fetch(ipc_ctx: &IpcContext, params: GitTestFetchParams) -> Resul
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitIndexSizeParams {
-    project_id: ProjectId,
+    pub project_id: ProjectId,
 }
 
 pub fn git_index_size(ipc_ctx: &IpcContext, params: GitIndexSizeParams) -> Result<usize, Error> {
@@ -79,7 +79,7 @@ pub fn git_index_size(ipc_ctx: &IpcContext, params: GitIndexSizeParams) -> Resul
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitHeadParams {
-    project_id: ProjectId,
+    pub project_id: ProjectId,
 }
 
 pub fn git_head(ipc_ctx: &IpcContext, params: GitHeadParams) -> Result<String, Error> {
@@ -89,7 +89,7 @@ pub fn git_head(ipc_ctx: &IpcContext, params: GitHeadParams) -> Result<String, E
     Ok(head.name().unwrap().to_string())
 }
 
-pub fn delete_all_data(ipc_ctx: &IpcContext) -> Result<(), Error> {
+pub fn delete_all_data(ipc_ctx: &IpcContext, _params: ()) -> Result<(), Error> {
     let controller = &ipc_ctx.project_controller;
     for project in controller.list().context("failed to list projects")? {
         controller
@@ -102,11 +102,14 @@ pub fn delete_all_data(ipc_ctx: &IpcContext) -> Result<(), Error> {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitSetGlobalConfigParams {
-    key: String,
-    value: String,
+    pub key: String,
+    pub value: String,
 }
 
-pub fn git_set_global_config(params: GitSetGlobalConfigParams) -> Result<String, Error> {
+pub fn git_set_global_config(
+    _ipc_ctx: &IpcContext,
+    params: GitSetGlobalConfigParams,
+) -> Result<String, Error> {
     let mut config = git2::Config::open_default().to_error()?;
     config.set_str(&params.key, &params.value).to_error()?;
     Ok(params.value)
@@ -115,10 +118,13 @@ pub fn git_set_global_config(params: GitSetGlobalConfigParams) -> Result<String,
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitRemoveGlobalConfigParams {
-    key: String,
+    pub key: String,
 }
 
-pub fn git_remove_global_config(params: GitRemoveGlobalConfigParams) -> Result<(), Error> {
+pub fn git_remove_global_config(
+    _ipc_ctx: &IpcContext,
+    params: GitRemoveGlobalConfigParams,
+) -> Result<(), Error> {
     let mut config = git2::Config::open_default().to_error()?;
     config.remove(&params.key).to_error()?;
     Ok(())
@@ -127,10 +133,13 @@ pub fn git_remove_global_config(params: GitRemoveGlobalConfigParams) -> Result<(
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GitGetGlobalConfigParams {
-    key: String,
+    pub key: String,
 }
 
-pub fn git_get_global_config(params: GitGetGlobalConfigParams) -> Result<Option<String>, Error> {
+pub fn git_get_global_config(
+    _ipc_ctx: &IpcContext,
+    params: GitGetGlobalConfigParams,
+) -> Result<Option<String>, Error> {
     let config = git2::Config::open_default().to_error()?;
     let value = config.get_string(&params.key);
     match value {

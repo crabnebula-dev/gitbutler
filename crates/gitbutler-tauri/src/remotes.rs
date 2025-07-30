@@ -1,4 +1,4 @@
-use crate::error::Error;
+use but_interface::error::Error;
 use gitbutler_project::ProjectId;
 use gitbutler_repo::{GitRemote, RepoCommands};
 use tracing::instrument;
