@@ -12,7 +12,7 @@ use axum::{
 use but_interface::{
     IpcContext,
     broadcaster::Broadcaster,
-    commands::{git, repo, users},
+    commands::{git, repo, stack, users, virtual_branches},
     error::ToError as _,
 };
 use but_settings::AppSettingsWithDiskSync;
@@ -30,7 +30,6 @@ use crate::projects::ActiveProjects;
 pub(crate) struct RequestContext {
     app_settings: Arc<AppSettingsWithDiskSync>,
     user_controller: Arc<gitbutler_user::Controller>,
-    project_controller: Arc<gitbutler_project::Controller>,
     active_projects: Arc<Mutex<ActiveProjects>>,
     broadcaster: Arc<Mutex<Broadcaster>>,
 }
@@ -72,7 +71,6 @@ pub async fn run() {
                 .expect("failed to create app settings"),
         ),
         user_controller: Arc::new(gitbutler_user::Controller::from_path(&app_data_dir)),
-        project_controller: Arc::new(gitbutler_project::Controller::from_path(&app_data_dir)),
         active_projects: Arc::new(Mutex::new(ActiveProjects::new())),
         broadcaster: broadcaster.clone(),
     };
@@ -83,7 +81,6 @@ pub async fn run() {
                 .expect("failed to create app settings"),
         ),
         user_controller: Arc::new(gitbutler_user::Controller::from_path(&app_data_dir)),
-        project_controller: Arc::new(gitbutler_project::Controller::from_path(&app_data_dir)),
         broadcaster: broadcaster.clone(),
     };
 
@@ -202,47 +199,47 @@ async fn handle_command(
         // "list_projects" => projects::list_projects(&ctx).await,
         // "delete_project" => projects::delete_project(&ctx, request.params),
         // "set_project_active" => projects::set_project_active(&ctx, request.params).await,
-        // // Virtual branches commands
-        // "normalize_branch_name" => virtual_branches::normalize_branch_name(request.params),
-        // "create_virtual_branch" => virtual_branches::create_virtual_branch(&ctx, request.params),
-        // "delete_local_branch" => virtual_branches::delete_local_branch(&ctx, request.params),
-        // "create_virtual_branch_from_branch" => {
-        //     virtual_branches::create_virtual_branch_from_branch(&ctx, request.params)
-        // }
-        // "integrate_upstream_commits" => {
-        //     virtual_branches::integrate_upstream_commits(&ctx, request.params)
-        // }
-        // "get_base_branch_data" => virtual_branches::get_base_branch_data(&ctx, request.params),
-        // "set_base_branch" => virtual_branches::set_base_branch(&ctx, request.params),
-        // "push_base_branch" => virtual_branches::push_base_branch(&ctx, request.params),
-        // "update_stack_order" => virtual_branches::update_stack_order(&ctx, request.params),
-        // "unapply_stack" => virtual_branches::unapply_stack(&ctx, request.params).await,
-        // "can_apply_remote_branch" => {
-        //     virtual_branches::can_apply_remote_branch(&ctx, request.params)
-        // }
-        // "list_commit_files" => virtual_branches::list_commit_files(&ctx, request.params),
-        // "amend_virtual_branch" => virtual_branches::amend_virtual_branch(&ctx, request.params),
-        // "move_commit_file" => virtual_branches::move_commit_file(&ctx, request.params),
-        // "undo_commit" => virtual_branches::undo_commit(&ctx, request.params),
-        // "insert_blank_commit" => virtual_branches::insert_blank_commit(&ctx, request.params),
-        // "reorder_stack" => virtual_branches::reorder_stack(&ctx, request.params),
-        // "find_git_branches" => virtual_branches::find_git_branches(&ctx, request.params),
-        // "list_branches" => virtual_branches::list_branches(&ctx, request.params),
-        // "get_branch_listing_details" => {
-        //     virtual_branches::get_branch_listing_details(&ctx, request.params)
-        // }
-        // "squash_commits" => virtual_branches::squash_commits(&ctx, request.params),
-        // "fetch_from_remotes" => virtual_branches::fetch_from_remotes(&ctx, request.params),
-        // "move_commit" => virtual_branches::move_commit(&ctx, request.params),
-        // "update_commit_message" => virtual_branches::update_commit_message(&ctx, request.params),
-        // "find_commit" => virtual_branches::find_commit(&ctx, request.params),
-        // "upstream_integration_statuses" => {
-        //     virtual_branches::upstream_integration_statuses(&ctx, request.params)
-        // }
-        // "integrate_upstream" => virtual_branches::integrate_upstream(&ctx, request.params),
-        // "resolve_upstream_integration" => {
-        //     virtual_branches::resolve_upstream_integration(&ctx, request.params)
-        // }
+        // Virtual branches commands
+        "normalize_branch_name" => run_cmd(&ipc_ctx, request.params, virtual_branches::normalize_branch_name),
+        "create_virtual_branch" => run_cmd(&ipc_ctx, request.params, virtual_branches::create_virtual_branch),
+        "delete_local_branch" => run_cmd(&ipc_ctx, request.params, virtual_branches::delete_local_branch),
+        "create_virtual_branch_from_branch" => {
+            run_cmd(&ipc_ctx, request.params, virtual_branches::create_virtual_branch_from_branch)
+        }
+        "integrate_upstream_commits" => {
+            run_cmd(&ipc_ctx, request.params, virtual_branches::integrate_upstream_commits)
+        }
+        "get_base_branch_data" => run_cmd(&ipc_ctx, request.params, virtual_branches::get_base_branch_data),
+        "set_base_branch" => run_cmd(&ipc_ctx, request.params, virtual_branches::set_base_branch),
+        "push_base_branch" => run_cmd(&ipc_ctx, request.params, virtual_branches::push_base_branch),
+        "update_stack_order" => run_cmd(&ipc_ctx, request.params, virtual_branches::update_stack_order),
+        "unapply_stack" => run_cmd(&ipc_ctx, request.params, virtual_branches::unapply_stack),
+        "can_apply_remote_branch" => {
+            run_cmd(&ipc_ctx, request.params, virtual_branches::can_apply_remote_branch)
+        }
+        "list_commit_files" => run_cmd(&ipc_ctx, request.params, virtual_branches::list_commit_files),
+        "amend_virtual_branch" => run_cmd(&ipc_ctx, request.params, virtual_branches::amend_virtual_branch),
+        "move_commit_file" => run_cmd(&ipc_ctx, request.params, virtual_branches::move_commit_file),
+        "undo_commit" => run_cmd(&ipc_ctx, request.params, virtual_branches::undo_commit),
+        "insert_blank_commit" => run_cmd(&ipc_ctx, request.params, virtual_branches::insert_blank_commit),
+        "reorder_stack" => run_cmd(&ipc_ctx, request.params, virtual_branches::reorder_stack),
+        "find_git_branches" => run_cmd(&ipc_ctx, request.params, virtual_branches::find_git_branches),
+        "list_branches" => run_cmd(&ipc_ctx, request.params, virtual_branches::list_branches),
+        "get_branch_listing_details" => {
+            run_cmd(&ipc_ctx, request.params, virtual_branches::get_branch_listing_details)
+        }
+        "squash_commits" => run_cmd(&ipc_ctx, request.params, virtual_branches::squash_commits),
+        "fetch_from_remotes" => run_cmd(&ipc_ctx, request.params, virtual_branches::fetch_from_remotes),
+        "move_commit" => run_cmd(&ipc_ctx, request.params, virtual_branches::move_commit),
+        "update_commit_message" => run_cmd(&ipc_ctx, request.params, virtual_branches::update_commit_message),
+        "find_commit" => run_cmd(&ipc_ctx, request.params, virtual_branches::find_commit),
+        "upstream_integration_statuses" => {
+            run_cmd(&ipc_ctx, request.params, virtual_branches::upstream_integration_statuses)
+        }
+        "integrate_upstream" => run_cmd(&ipc_ctx, request.params, virtual_branches::integrate_upstream),
+        "resolve_upstream_integration" => {
+            run_cmd(&ipc_ctx, request.params, virtual_branches::resolve_upstream_integration)
+        }
         // // Operating modes commands
         // "operating_mode" => modes::operating_mode(&ctx, request.params),
         // "enter_edit_mode" => modes::enter_edit_mode(&ctx, request.params),
@@ -309,6 +306,14 @@ async fn handle_command(
         }
         "post_commit_hook" => run_cmd(&ipc_ctx, request.params, repo::post_commit_hook),
         "message_hook" => run_cmd(&ipc_ctx, request.params, repo::message_hook),
+        // Stack management commands
+        "create_branch" => run_cmd(&ipc_ctx, request.params, stack::create_branch),
+        "remove_branch" => run_cmd(&ipc_ctx, request.params, stack::remove_branch),
+        "update_branch_name" => run_cmd(&ipc_ctx, request.params, stack::update_branch_name),
+        "update_branch_description" => run_cmd(&ipc_ctx, request.params, stack::update_branch_description),
+        "update_branch_pr_number" => run_cmd(&ipc_ctx, request.params, stack::update_branch_pr_number),
+        "push_stack" => run_cmd(&ipc_ctx, request.params, stack::push_stack),
+        "push_stack_to_review" => run_cmd(&ipc_ctx, request.params, stack::push_stack_to_review),
         // // Undo/Snapshot commands
         // "list_snapshots" => undo::list_snapshots(&ctx, request.params),
         // "restore_snapshot" => undo::restore_snapshot(&ctx, request.params),
