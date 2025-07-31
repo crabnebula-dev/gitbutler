@@ -15,7 +15,13 @@
 		"strict": true,
 		"experimentalDecorators": true,
 		"noFallthroughCasesInSwitch": true,
-		"types": ["vitest/importMeta", "vitest/jsdom"]
+		"types": [
+			"vitest/importMeta",
+			"vitest/jsdom",
+			"node",
+			"webdriverio",
+			"@wdio/globals/types",
+			"@wdio/mocha-framework"]
 	},
 	"include": [
 		"vitest-setup.js",
