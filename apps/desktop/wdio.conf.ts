@@ -26,7 +26,12 @@ export const config: Options.WebdriverIO = {
 		{
 			maxInstances: 1,
 			'tauri:options': {
-				application: path.resolve(__dirname, '../../target/debug/gitbutler-tauri')
+				application: path.resolve(
+					__dirname,
+					isMac
+						? '../../target/debug/bundle/macos/GitButler Dev.app'
+						: '../../target/debug/gitbutler-tauri'
+				)
 			}
 		}
 	],
