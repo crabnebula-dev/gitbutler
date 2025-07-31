@@ -339,6 +339,9 @@ fn main() {
             #[cfg(not(target_os = "linux"))]
             let builder = builder.plugin(tauri_plugin_window_state::Builder::default().build());
 
+            #[cfg(feature = "automation")]
+            let builder = builder.plugin(tauri_plugin_automation::init());
+
             builder
                 .build(tauri_context)
                 .expect("Failed to build tauri app")

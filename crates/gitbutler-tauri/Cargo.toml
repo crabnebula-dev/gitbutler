@@ -44,6 +44,7 @@ tauri-plugin-store = "2.3.0"
 tauri-plugin-updater = "2.9.0"
 tauri-plugin-window-state = "2.3.0"
 tauri-plugin-clipboard-manager = "2.3.0"
+tauri-plugin-automation = { version = "0.1.1", optional = true }
 
 parking_lot.workspace = true
 log = "^0.4"
@@ -106,3 +107,4 @@ devtools = ["tauri/devtools"]
 custom-protocol = ["tauri/custom-protocol"]
 
 error-context = ["dep:backtrace"]
+automation = ["tauri-plugin-automation"]
